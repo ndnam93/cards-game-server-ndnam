@@ -25,7 +25,6 @@ const refreshTokens = catchAsync(async (req, res) => {
   res.send({ ...tokens });
 });
 
-
 module.exports = {
   register,
   login,

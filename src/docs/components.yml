@@ -15,6 +15,30 @@ components:
         email: fake@example.com
         name: fake name
 
+    Card:
+      type: object
+      properties:
+        id:
+          type: string
+        image_url:
+          type: string
+        name:
+          type: string
+        power:
+          type: number
+        element:
+          type: string
+        price:
+          type: number
+      example:
+        id: 5ebac534954b54139806c112
+        image_url: https://i.picsum.photos/id/874/200/200.jpg?hmac=mRU152zixoFMGIUREkgG83bUK2b5pIF0fhfIEnZKp6M
+        name: Lv. 4 water
+        power: 4
+        element: water
+        price: 4
+
+
     Token:
       type: object
       properties:
