@@ -3,11 +3,6 @@ const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const { userService } = require('../services');
 
-const createUser = catchAsync(async (req, res) => {
-  const user = await userService.createUser(req.body);
-  res.status(httpStatus.CREATED).send(user);
-});
-
 const getUser = catchAsync(async (req, res) => {
   const user = await userService.getUserById(req.params.userId);
   if (!user) {
@@ -21,8 +16,13 @@ const updateUser = catchAsync(async (req, res) => {
   res.send(user);
 });
 
+const updateUserCards = catchAsync(async (req, res) => {
+  const user = await userService.updateUserCardsByUserId(req.params.userId, req.body);
+  res.send(user);
+});
+
 module.exports = {
-  createUser,
   getUser,
   updateUser,
+  updateUserCards,
 };

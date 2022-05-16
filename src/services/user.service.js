@@ -1,5 +1,6 @@
 const httpStatus = require('http-status');
-const { User } = require('../models');
+const _ = require('lodash');
+const { User, Card } = require('../models');
 const ApiError = require('../utils/ApiError');
 
 /**
@@ -61,10 +62,51 @@ const updateUserById = async (userId, updateBody) => {
   return user;
 };
 
+/**
+ * Update user by id
+ * @param {ObjectId} userId
+ * @param {Object} updateBody
+ * @returns {Promise<User>}
+ */
+const updateUserCardsByUserId = async (userId, updateBody) => {
+  const user = await getUserById(userId);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  const cardIds = _.map(updateBody, 'card_id');
+  const cards = await Card.find(
+    {
+      _id: {
+        $in: cardIds,
+      },
+    },
+    '_id price'
+  );
+  const queriedCardIds = _.map(cards, '_id');
+  if (cardIds.length !== queriedCardIds.length) {
+    const invalidIds = _.difference(cardIds, queriedCardIds);
+    throw new ApiError(httpStatus.BAD_REQUEST, `Invalid card ids: ${invalidIds.join(', ')}`);
+  }
+
+  const totalCost = updateBody.reduce((cost, item) => {
+    const cardPrice = _.find(cards, (card) => item.card_id === card._id.toString()).price;
+    return cost + item.count * cardPrice;
+  }, 0);
+  if (totalCost > 10) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Budget exceeded');
+  }
+
+  Object.assign(user, { cards: updateBody });
+  await user.save();
+  return user;
+};
+
 module.exports = {
   createUser,
   queryUsers,
   getUserById,
   getUserByEmail,
   updateUserById,
+  updateUserCardsByUserId,
 };

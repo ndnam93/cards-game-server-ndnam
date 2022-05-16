@@ -8,12 +8,19 @@ components:
         email:
           type: string
           format: email
-        name:
-          type: string
+        cards:
+          type: array
+          items:
+            card_id:
+              type: string
+            count:
+              type: integer
       example:
         id: 5ebac534954b54139806c112
         email: fake@example.com
-        name: fake name
+        cards:
+          - card_id: 5ebac534954b54139806c112
+            count: 1
 
     Card:
       type: object
@@ -68,6 +75,15 @@ components:
           type: string
 
   responses:
+    IncorrectPassword:
+      description: Incorrect password
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 400
+            message: Incorrect password
     DuplicateEmail:
       description: Email already taken
       content:
@@ -77,6 +93,24 @@ components:
           example:
             code: 400
             message: Email already taken
+    InvalidCardIds:
+      description: Invalid card ids
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 400
+            message: Invalid card ids
+    BudgetExceeded:
+      description: Budget exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 400
+            message: Budget exceeded
     Unauthorized:
       description: Unauthorized
       content:

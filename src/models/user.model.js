@@ -29,10 +29,6 @@ const userSchema = mongoose.Schema(
       },
       private: true, // used by the toJSON plugin
     },
-    coin_balance: {
-      type: Number,
-      default: 10,
-    },
     cards: [
       {
         card_id: {

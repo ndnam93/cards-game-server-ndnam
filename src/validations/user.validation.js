@@ -26,8 +26,21 @@ const updateUser = {
     .min(1),
 };
 
+const updateUserCards = {
+  params: Joi.object().keys({
+    userId: Joi.required().custom(objectId),
+  }),
+  body: Joi.array().items(
+    Joi.object().keys({
+      card_id: Joi.required().custom(objectId),
+      count: Joi.number().integer().required().min(1),
+    })
+  ),
+};
+
 module.exports = {
   createUser,
   getUser,
   updateUser,
+  updateUserCards,
 };
