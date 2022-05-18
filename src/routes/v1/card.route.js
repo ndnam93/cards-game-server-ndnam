@@ -2,6 +2,7 @@ const express = require('express');
 const validate = require('../../middlewares/validate');
 const cardValidation = require('../../validations/card.validation');
 const cardController = require('../../controllers/card.controller');
+const whitelist = require('../../middlewares/whitelist');
 
 const router = express.Router();
 
@@ -10,7 +11,7 @@ router.route('/').get(cardController.getCards);
 router
   .route('/collection')
   .get(validate(cardValidation.getCardsByUserEmail), cardController.getCardsByUserEmail)
-  .post(validate(cardValidation.updateUserCards), cardController.updateUserCards);
+  .post(whitelist, validate(cardValidation.updateUserCards), cardController.updateUserCards);
 
 module.exports = router;
 
