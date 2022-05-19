@@ -66,6 +66,7 @@ module.exports = router;
  *
  *   post:
  *     summary: Update the list of cards of a user
+ *     description: Must be accessed from a whitelisted IP
  *     tags: [Cards]
  *     security:
  *     requestBody:
