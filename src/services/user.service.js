@@ -3,6 +3,8 @@ const _ = require('lodash');
 const { User, Card } = require('../models');
 const ApiError = require('../utils/ApiError');
 
+const COIN_BUDGET = 10;
+
 /**
  * Create a user
  * @param {Object} userBody
@@ -93,7 +95,7 @@ const updateUserCardsByUserId = async (userId, updateBody) => {
     const cardPrice = _.find(cards, (card) => item.card_id === card._id.toString()).price;
     return cost + item.count * cardPrice;
   }, 0);
-  if (totalCost > 10) {
+  if (totalCost > COIN_BUDGET) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Budget exceeded');
   }
 
